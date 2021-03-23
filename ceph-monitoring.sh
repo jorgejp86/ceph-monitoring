@@ -36,6 +36,7 @@ ExecReload=/bin/kill -HUP $MAINPID
 ExecStart=/usr/local/bin/prometheus \
 --config.file=/etc/prometheus/prometheus.yml \
 --storage.tsdb.path=/var/lib/prometheus \
+--storage.tsdb.retention.time=90d \
 --web.console.templates=/etc/prometheus/consoles \
 --web.console.libraries=/etc/prometheus/console_libraries \
 --web.listen-address=0.0.0.0:9090 \
@@ -47,8 +48,10 @@ Restart=always
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/prometheus.service
 
+chown -R prometheus:prometheus /etc/prometheus
+chown -R prometheus:prometheus /var/lib/prometheus
+
 for i in rules rules.d files_sd; do
-  chown -R prometheus:prometheus /etc/prometheus/${i}
   chmod -R 775 /etc/prometheus/${i}
 done
 
