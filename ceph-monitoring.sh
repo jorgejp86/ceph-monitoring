@@ -70,8 +70,6 @@ apt install -y docker.io
 git clone https://github.com/digitalocean/ceph_exporter.git
 docker build -t ceph_exporter ceph_exporter
 
-docker run -dit -v /etc/ceph:/etc/ceph --name ceph_exporter -h ceph_exporter --net host --restart unless-stopped ceph_exporter
-
 echo "
   - job_name: 'ceph-exporter'
     static_configs:
